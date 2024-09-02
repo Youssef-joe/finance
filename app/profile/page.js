@@ -1,39 +1,58 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 export default function Profile() {
-  const { data: session, status } = useSession();
   const router = useRouter();
-
-  if (status === 'loading') {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-600 text-xl">Loading...</div>
-      </div>
-    );
-  }
-
-  if (!session) {
-    router.push('/auth/signin');
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto p-6">
-        <div className="bg-white p-6 shadow-md rounded-lg">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">Profile</h1>
-          <div className="mb-6">
-            <p className="text-gray-700 mb-2">Name: {session.user.name}</p>
-            <p className="text-gray-700 mb-2">Email: {session.user.email}</p>
-            <p className="text-gray-700 mb-2">Role: {session.user.role || 'User'}</p>
+        {/* Profile Header */}
+        <div className="bg-white p-6 shadow-md rounded-lg mb-6 flex items-center">
+          <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
+            {/* Placeholder for profile picture */}
+            <span className="text-gray-500 text-4xl">JD</span>
           </div>
-          <Link href="/auth/signout" className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
-            Sign Out
-          </Link>
+          <div className="ml-6">
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">John Doe</h1>
+            <p className="text-gray-600 text-lg mb-4">johndoe@example.com</p>
+            <button 
+              onClick={() => router.push('/settings')}
+              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md"
+            >
+              Edit Profile
+            </button>
+          </div>
+        </div>
+
+        {/* Profile Details */}
+        <div className="bg-white p-6 shadow-md rounded-lg">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Profile Details</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Personal Information */}
+            <div className="bg-gray-50 p-4 rounded-lg shadow">
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">Personal Information</h3>
+              <p className="text-gray-600"><strong>Full Name:</strong> Johnathan Doe</p>
+              <p className="text-gray-600"><strong>Email:</strong> johndoe@example.com</p>
+              <p className="text-gray-600"><strong>Phone:</strong> (123) 456-7890</p>
+              <p className="text-gray-600"><strong>Address:</strong> 1234 Elm Street, Springfield</p>
+            </div>
+
+            {/* Account Information */}
+            <div className="bg-gray-50 p-4 rounded-lg shadow">
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">Account Information</h3>
+              <p className="text-gray-600"><strong>Username:</strong> johndoe123</p>
+              <p className="text-gray-600"><strong>Member Since:</strong> January 2020</p>
+              <p className="text-gray-600"><strong>Status:</strong> Active</p>
+              <button 
+                onClick={() => router.push('/change-password')}
+                className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded shadow-md"
+              >
+                Change Password
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
