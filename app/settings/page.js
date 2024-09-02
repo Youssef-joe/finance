@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Settings() {
   const [name, setName] = useState('John Doe');
@@ -30,13 +31,18 @@ export default function Settings() {
       return;
     }
     // Handle form submission logic
+    // Perform async actions such as API calls here
     router.push('/dashboard');
   };
 
   const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfilePic(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePic(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -46,8 +52,14 @@ export default function Settings() {
         <div className="bg-white p-6 shadow-md rounded-lg mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">Settings</h1>
           <div className="flex items-center mb-6">
-            <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-300">
-              <img src={profilePic} alt="Profile" className="w-full h-full object-cover" />
+            <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-300 relative">
+              <Image
+                src={profilePic}
+                alt="Profile"
+                layout="fill"
+                objectFit="cover"
+                quality={75}
+              />
             </div>
             <div className="ml-4">
               <label htmlFor="profilePic" className="block text-blue-500 hover:underline cursor-pointer">
